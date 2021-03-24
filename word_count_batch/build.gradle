@@ -56,10 +56,10 @@ task copyDependencies(type: Copy) {
 task runWordCountBatch(type: Exec) {
     executable("java")
     args(
-            "-classpath", "${dependencyJarPath}/${flinkClientJarName}:${jarPath}",
+            "-classpath", "${dependencyJarPath}/${flinkClientJarName};${jarPath}",
             mainClass,
-            "--input", "file://${project.file("data").getAbsolutePath()}",
-            "--output", "file://${project.buildDir.getAbsolutePath()}/output",
+            "--input", "file:///${project.file("data").getAbsolutePath()}",
+            "--output", "file:///${project.buildDir.getAbsolutePath()}/output",
     )
     doFirst {
         println("running command: ${String.join(" ", getCommandLine())}")

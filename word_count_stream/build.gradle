@@ -198,7 +198,7 @@ task stopKafkaDocker() {
 task runWordCountStream(type: Exec) {
     executable("java")
     args(
-            "-classpath", "${dependencyJarPath}/${flinkClientJarName}:${jarPath}",
+            "-classpath", "${dependencyJarPath}/${flinkClientJarName};${jarPath}",
             mainClass,
             "--baseFilePath", project.file("data/the_little_match_girl.txt"),
     )

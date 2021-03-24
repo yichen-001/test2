@@ -57,7 +57,7 @@ task copyDependencies(type: Copy) {
 task runMeteorologicalData(type: Exec) {
     executable("java")
     args(
-            "-classpath", "${dependencyJarPath}/${flinkClientJarName}:${jarPath}",
+            "-classpath", "${dependencyJarPath}/${flinkClientJarName};${jarPath}",
             mainClass,
     )
     doFirst {
