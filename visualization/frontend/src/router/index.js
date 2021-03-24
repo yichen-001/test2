@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Hello from '../components/HelloWorld.vue'
 import FlinkChart from '../components/FlinkChart.vue'
 import Dashboard from '../components/Dashboard'
+import Wholepage from '../components/wholepage.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,11 @@ export default new VueRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard
+    },
+    {
+      path: '/wholepage',
+      name: 'Wholepage',
+      component: Wholepage
     }
   ]
 })
