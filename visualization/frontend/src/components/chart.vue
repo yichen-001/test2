@@ -1,6 +1,6 @@
 <template>
-	<div class="flink-chart" style="width:400px; height:280px; border:solid 1px #000000; background-color: #ffffff">
-		<chart ref="barChart" :options="chartOptions" :auto-resize="true"></chart>
+    <div class="flink-chart" style="width:400px; height:280px; border:solid 1px #000000; background-color: #ffffff">
+        <chart ref="barChart" :options="chartOptions" :auto-resize="true"></chart>
 	</div>
 </template>
 
@@ -47,10 +47,6 @@ const baseOption = {
 
 export default {
 	name: 'FlinkChart',
-	//引用vue-echarts中的组件，组件名命名为chart
-	components: {
-	    "chart": ECharts
-	},
 	data() {
 		//把图的配置作为一个参数
 		return {chartOptions: baseOption}
@@ -59,7 +55,7 @@ export default {
 		this.init();
 	},
 	unmounted() {
-		clearInterval(__timer);
+		//clearInterval(__timer);
 	},
 	methods: {
 		//原先的函数
