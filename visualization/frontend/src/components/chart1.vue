@@ -5,9 +5,10 @@
 </template>
 
 <script>
-//import axios from 'axios'//用于获取数据的，需要先安装axios
+import axios from 'axios'//用于获取数据的，需要先安装axios
 
-//const URL = '';//axios获取数据时需要的URL
+//const URL = '/api/data_keeper/queryDataWithPrefix?namePrefix=MeteorologicalDataStream_';//axios获取数据时需要的URL！！！！
+const URL = '/api/data_keeper/queryDataWithPrefix?namePrefix=temperature_';//axios获取数据时需要的URL
 //图的配置
 const baseOption = {
 	title: {
@@ -29,11 +30,11 @@ const baseOption = {
 	}]
 };
 //指定刷新数据的周期
-//let __interval = 2000;
+let __interval = 2000;
 //用以保存setInterval方法返回的参数值，clearInterval会用到这个参数值
-//let __timer;
+let __timer;
 
-/*function preProcess(res) {
+function preProcess(res) {
 	let x = [];
 	let y = [];
 	Object.keys(res.data)
@@ -43,7 +44,7 @@ const baseOption = {
 			y.push(res.data[key]);
 		})
 	return {x, y};
-}*/
+}
 
 export default {
 	name: 'FlinkChart',
@@ -55,41 +56,34 @@ export default {
 		this.init();
 	},
 	unmounted() {
-		//clearInterval(__timer);
+		clearInterval(__timer);
 	},
 	methods: {
 		//原先的函数
-		/*updateChart({x, y}) {
+		updateChart({x, y}) {
 			baseOption.xAxis.data = x;
 			baseOption.series[0].data = y;
 			this.chartOptions = baseOption;
-		},*/
-		//新建的函数
-		updateChart() {
-			baseOption.xAxis.data = [1,2,3];
-			baseOption.series[0].data = [4,5,5];
-			this.chartOptions = baseOption;
 		},
-		// fetchData(limit = 100) {
-		// 	return axios.get(URL + `&limit=${limit}`).then(res => res.data)
-		// },
+		fetchData(limit = 100) {
+            return axios.get(URL + `&limit=${limit}`).then(res => res.data)
+		},
 		init() {
-			//this.$refs.barChart.showLoading();
+			this.$refs.barChart.showLoading();
 			//then方法是保证数据获取到之后才会执行后面的内容
-			//this.fetchData().then(res => {
-			//if (Object.keys(res.data).length) {
-				//this.$refs.barChart.hideLoading();
-				//此处有修改，将updateCharts的参数去掉了
+			this.fetchData().then(res => {
+			if (Object.keys(res.data).length) {
+				this.$refs.barChart.hideLoading();
 				this.$refs.barChart.resize();
-				this.updateChart();
-				//Object.keys(res.data).length && this.doTimer();
-			//} else {
-				//window.alert('无数据');
-			//}
-			//})
+				this.updateChart(preProcess(res));
+				Object.keys(res.data).length && this.doTimer();
+			} else {
+				window.alert('无数据');
+			}
+			})
 		},
 		//用来刷新取得数据
-		/*doTimer() {
+		doTimer() {
 			__timer = setInterval(() => {
 				this.fetchData().then(res => {
 					if (Object.keys(res.data).length) {
@@ -97,7 +91,7 @@ export default {
 					}
 				})
 			}, __interval);
-		}*/
+		}
 	}
 }
 </script>

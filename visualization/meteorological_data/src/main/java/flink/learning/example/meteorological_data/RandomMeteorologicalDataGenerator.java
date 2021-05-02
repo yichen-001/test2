@@ -19,7 +19,10 @@ public class RandomMeteorologicalDataGenerator implements Iterable<String>, Seri
     private final List<String> idList;
     private transient Random random;
     private transient boolean ends;
-    private transient Double lastTemperature;
+    private transient Double lastTemperature;//温度
+    private transient Double lastHumidity;//湿度
+    private transient Double lastRainfall;//降水
+    private transient Double lastWindPower;//风力
 
     public RandomMeteorologicalDataGenerator(
             String randomSeed,
@@ -42,13 +45,16 @@ public class RandomMeteorologicalDataGenerator implements Iterable<String>, Seri
     }
 
     public boolean configured() {
-        return null != lastTemperature && null != random;
+        return null != lastTemperature && null != random && null != lastHumidity && null != lastRainfall && null != lastWindPower;
     }
 
     public void configure() throws IOException {
         random = new Random(randomSeed.hashCode());
         ends = false;
         lastTemperature = 20.0;
+        lastHumidity = 50.0;
+        lastRainfall = 5.0;
+        lastWindPower = 1.6;
     }
 
     public void ends() {
@@ -73,14 +79,24 @@ public class RandomMeteorologicalDataGenerator implements Iterable<String>, Seri
                 } catch (InterruptedException e) {
                     LOGGER.warn(String.format("interrupted: %s", e.getMessage()), e);
                 }
-                double wave = random.nextDouble() * 3 - 3.0 / 2;
-                double currentTemperature = lastTemperature + wave;
+                double temperatureWave = random.nextDouble() * 3 - 3.0 / 2;
+                double currentTemperature = lastTemperature + temperatureWave;
                 lastTemperature = currentTemperature;
+                double humidityWave = random.nextDouble() * 10 - 5.0;
+                double currentHumidity = lastHumidity + humidityWave;
+                lastHumidity = currentHumidity;
+                double rainfallWave = random.nextDouble() * 3 - 1.5;
+                double currentRainfall = lastRainfall + rainfallWave;
+                lastRainfall = currentRainfall;
+                double windPowerWave = random.nextDouble() - 0.5;
+                double currentWindPower = lastWindPower + windPowerWave;
+                lastWindPower = currentWindPower;
+
                 if (null == idList || idList.isEmpty()) {
                     return String.valueOf(currentTemperature);
                 } else {
-                    return String.format("%s,%s,%s",
-                            System.currentTimeMillis(), idList.get(random.nextInt(idList.size())), lastTemperature);
+                    return String.format("%s,%s,%s,%s,%s",
+                            System.currentTimeMillis(), lastTemperature, lastHumidity, lastRainfall, lastWindPower);
                 }
             }
         };

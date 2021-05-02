@@ -61,7 +61,7 @@ task copyDependencies(type: Sync) {
 task runMeteorologicalData(type: Exec) {
     executable("java")
     args(
-            "-classpath", "${dependencyJarPath}/*:${jarPath}",
+            "-classpath", "${dependencyJarPath}/*;${jarPath}",
             mainClass,
             "regular",
     )
@@ -74,9 +74,65 @@ task runMeteorologicalData(type: Exec) {
 task runMeteorologicalDataWithTable(type: Exec) {
     executable("java")
     args(
-            "-classpath", "${dependencyJarPath}/*:${jarPath}",
+            "-classpath", "${dependencyJarPath}/*;${jarPath}",
             mainClass,
             "table",
+    )
+    doFirst {
+        println("running command: ${String.join(" ", getCommandLine())}")
+    }
+    dependsOn(jar)
+    dependsOn(copyDependencies)
+}
+task runTemperatureJob(type: Exec) {
+    executable("java")
+    args(
+            "-classpath", "${dependencyJarPath}/*;${jarPath}",
+            mainClass,
+            "table",
+            "temperature",
+    )
+    doFirst {
+        println("running command: ${String.join(" ", getCommandLine())}")
+    }
+    dependsOn(jar)
+    dependsOn(copyDependencies)
+}
+task runHumidityJob(type: Exec) {
+    executable("java")
+    args(
+            "-classpath", "${dependencyJarPath}/*;${jarPath}",
+            mainClass,
+            "table",
+            "humidity",
+    )
+    doFirst {
+        println("running command: ${String.join(" ", getCommandLine())}")
+    }
+    dependsOn(jar)
+    dependsOn(copyDependencies)
+}
+task runRainfallJob(type: Exec) {
+    executable("java")
+    args(
+            "-classpath", "${dependencyJarPath}/*;${jarPath}",
+            mainClass,
+            "table",
+            "rainfall",
+    )
+    doFirst {
+        println("running command: ${String.join(" ", getCommandLine())}")
+    }
+    dependsOn(jar)
+    dependsOn(copyDependencies)
+}
+task runWindPowerJob(type: Exec) {
+    executable("java")
+    args(
+            "-classpath", "${dependencyJarPath}/*;${jarPath}",
+            mainClass,
+            "table",
+            "windPower",
     )
     doFirst {
         println("running command: ${String.join(" ", getCommandLine())}")
